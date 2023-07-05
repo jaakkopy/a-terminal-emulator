@@ -11,20 +11,20 @@ void WindowWrapper::setup_window() {
         exit(1);
     }
     default_screen = DefaultScreen(display);
-    window = XCreateSimpleWindow(display, RootWindow(display, default_screen), 10, 10, 100, 100, 1, BlackPixel(display, default_screen), WhitePixel(display, default_screen));
+    window = XCreateSimpleWindow(display, RootWindow(display, default_screen), x, y, width, height, border_width, BlackPixel(display, default_screen), BlackPixel(display, default_screen));
     XSelectInput(display, window, ExposureMask | KeyPressMask);
     XMapWindow(display, window);
 }
 
 void WindowWrapper::handle_events() {
+    const char *test_str = "Hello!";
+    GC test_graphics_context = XCreateGC(display, window, 0, 0);
+    XSetForeground(display, test_graphics_context, WhitePixel(display, default_screen));
     while (1) {
         XNextEvent(display, &event);
-        if (event.type == Expose) {
-            XFillRectangle(display, window, DefaultGC(display, default_screen), 20, 20, 10, 10);
-            XDrawString(display, window, DefaultGC(display, default_screen), 10, 50, "Hello", 5);
-        }
         if (event.type == KeyPress)
             break;
+        XDrawString(display, window, test_graphics_context, width/2, height/2, test_str, strlen(test_str));
     }
     XCloseDisplay(display);
 }

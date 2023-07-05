@@ -12,6 +12,11 @@ private:
     Window window;
     XEvent event;
     int default_screen;
+    int x = 0;
+    int y = 0;
+    unsigned width = 800;
+    unsigned height = 800;
+    unsigned border_width = 0;
 };
 
 
