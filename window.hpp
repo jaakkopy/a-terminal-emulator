@@ -2,11 +2,12 @@
 #define WINDOW_HPP
 
 #include <X11/Xlib.h>
+#include "event_handler.hpp"
 
 class WindowWrapper {
 public:
     void setup_window();
-    void handle_events();
+    void receive_events(EventHandler &evh);
 private:
     Display *display;
     Window window;

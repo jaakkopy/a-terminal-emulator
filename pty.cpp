@@ -48,3 +48,9 @@ bool PTY::start_shell_process() {
     std::cerr << "fork failed" << std::endl;
     return false;
 }
+
+void PTY::write_to_shell_process(char *buf, int amount_bytes) {
+    for (int i = 0; i < amount_bytes; ++i) {
+        write(primary, &buf[i], 1);
+    }
+}

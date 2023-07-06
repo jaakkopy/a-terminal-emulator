@@ -3,14 +3,17 @@
 #include <cstdlib>
 #include <cstring>
 #include <fcntl.h>
+#include <memory>
 #include "pty.hpp"
 #include "window.hpp"
+#include "event_handler.hpp"
 
 int main(void) {
-    PTY pty;
-    pty.setup();
+    std::shared_ptr<PTY> pty = std::make_shared<PTY>();
     WindowWrapper win;
+    EventHandler evh(pty);
+    pty->setup();
     win.setup_window();
-    win.handle_events();
+    win.receive_events(evh);
     return 0;
 }
