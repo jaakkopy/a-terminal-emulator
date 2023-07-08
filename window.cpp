@@ -19,6 +19,8 @@ Win::Win() {
     
     graphics_context = XCreateGC(display, window, 0, 0);
     XSetForeground(display, graphics_context, WhitePixel(display, default_screen));
+    display_descriptor = ConnectionNumber(display);
+    XSync(display, False);
 }
 
 Win::~Win() {
@@ -27,6 +29,10 @@ Win::~Win() {
 
 void Win::draw_char(char c) {
     XDrawString(display, window, graphics_context, width/2, height/2, &c, 1);
+}
+
+int Win::get_display_descriptor() {
+    return display_descriptor;
 }
 
 void Win::draw_str(const std::string s) {

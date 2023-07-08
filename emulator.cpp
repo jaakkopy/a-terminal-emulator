@@ -16,7 +16,7 @@ void Emulator::run() {
     shell->start_shell_process();
     XEvent event;
     fd_set fds;
-    int display_descriptor = ConnectionNumber(win->display);
+    int display_descriptor = win->get_display_descriptor();
     int primary = shell->get_primary_descriptor();    
     int select_check_upper_limit = (display_descriptor > primary ? display_descriptor : primary) + 1;
 
@@ -44,6 +44,7 @@ void Emulator::run() {
                         handle_key_press_event(&event.xkey);
                         break;
                     case Expose:
+                        std::cout << "expose" << std::endl;
                         break;
                 }
             }

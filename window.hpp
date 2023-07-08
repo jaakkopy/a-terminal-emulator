@@ -9,9 +9,11 @@ public:
     ~Win();
     void draw_str(const std::string s);
     void draw_char(char c);
+    int get_display_descriptor();
     Display *display = nullptr;
     Window window;
 private:
+    int display_descriptor;
     GC graphics_context;
     int default_screen;
     int x = 0;
