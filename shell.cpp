@@ -5,9 +5,9 @@
 #include <cstring>
 #include <unistd.h>
 #include <sys/ioctl.h>
-#include "pty.hpp"
+#include "shell.hpp"
 
-void PTY::setup() {
+void Shell::setup_pty() {
     primary = posix_openpt(O_RDWR | O_NOCTTY);
     if (primary == -1)
         goto pty_setup_fail;
@@ -25,7 +25,7 @@ pty_setup_fail:
     exit(1);
 }
 
-bool PTY::start_shell_process() {
+bool Shell::start_shell_process() {
     pid_t p = fork();
     if (p == 0) {
         close(primary);
@@ -49,8 +49,21 @@ bool PTY::start_shell_process() {
     return false;
 }
 
-void PTY::write_to_shell_process(char *buf, int amount_bytes) {
+void Shell::write_to_shell(char *buf, int amount_bytes) {
     for (int i = 0; i < amount_bytes; ++i) {
         write(primary, &buf[i], 1);
     }
+}
+
+char Shell::read_from_shell() {
+    char buf[1];
+    if (read(primary, buf, 1) <= 0) {
+        exit(1);
+    }
+    std::cout << "From shell: " << buf[0] << std::endl;
+    return buf[0];
+}
+
+int Shell::get_primary_descriptor() {
+    return primary;
 }

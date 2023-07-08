@@ -2,16 +2,17 @@
 #define WINDOW_HPP
 
 #include <X11/Xlib.h>
-#include "event_handler.hpp"
 
-class WindowWrapper {
+class Win {
 public:
-    void setup_window();
-    void receive_events(EventHandler &evh);
-private:
-    Display *display;
+    Win();
+    ~Win();
+    void draw_str(const std::string s);
+    void draw_char(char c);
+    Display *display = nullptr;
     Window window;
-    XEvent event;
+private:
+    GC graphics_context;
     int default_screen;
     int x = 0;
     int y = 0;
