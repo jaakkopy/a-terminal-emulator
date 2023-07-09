@@ -5,6 +5,7 @@
 #include <cstring>
 #include <unistd.h>
 #include <sys/ioctl.h>
+#include <termios.h>
 #include "shell.hpp"
 
 void Shell::setup_pty() {
@@ -38,7 +39,8 @@ bool Shell::start_shell_process() {
         dup2(secondary, STDOUT_FILENO);
         dup2(secondary, STDERR_FILENO);
         close(secondary);
-        char *env[] = { "TERM=vt100", NULL };
+        //char *env[] = { "TERM=vt100", NULL };
+        char *env[] = { "TERM=dumb", NULL }; // TERM=dumb prevents ANSI code sequences. Better for now
         execle("/bin/bash", "-/bin/bash", (char *)NULL, env);
         return false;
     } else if (p > 0) {
@@ -66,4 +68,13 @@ char Shell::read_from_shell() {
 
 int Shell::get_primary_descriptor() {
     return primary;
+}
+
+void Shell::adjust_window_buffer_size(int width, int height) {
+    struct winsize ws;
+    ws.ws_col = width;
+    ws.ws_row = height;
+    if (ioctl(primary, TIOCSWINSZ, &ws) == -1) {
+        std::cerr << strerror(errno) << std::endl;
+    }
 }

@@ -14,7 +14,7 @@ Win::Win() {
     }
     default_screen = DefaultScreen(display);
     window = XCreateSimpleWindow(display, RootWindow(display, default_screen), x, y, width, height, border_width, BlackPixel(display, default_screen), BlackPixel(display, default_screen));
-    XSelectInput(display, window, ExposureMask | KeyPressMask);
+    XSelectInput(display, window, ExposureMask | KeyPressMask | StructureNotifyMask);
     XMapWindow(display, window);
     
     graphics_context = XCreateGC(display, window, 0, 0);
@@ -27,14 +27,9 @@ Win::~Win() {
     XCloseDisplay(display);
 }
 
-void Win::draw_char(char c) {
-    XDrawString(display, window, graphics_context, width/2, height/2, &c, 1);
-}
-
 int Win::get_display_descriptor() {
     return display_descriptor;
 }
 
-void Win::draw_str(const std::string s) {
-    XDrawString(display, window, graphics_context, width/2, height/2, s.c_str(), s.size());
+void Win::draw_buf(const std::vector<std::vector<char>> &buf) {
 }
