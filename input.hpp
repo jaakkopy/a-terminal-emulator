@@ -5,7 +5,8 @@
 #include <string>
 #include <vector>
 
-class Input {
+class Input
+{
 public:
     Input(int history_capacity);
     void store_current_to_history();
@@ -13,6 +14,7 @@ public:
     std::string get_next();
     void add_to_input_buffer(char c);
     std::string get_input_buffer();
+
 private:
     std::vector<char> input_buffer;
     int history_index = 0;

@@ -4,7 +4,8 @@
 #include <sys/select.h>
 #include <string>
 
-class Shell {
+class Shell
+{
 public:
     void setup_pty();
     bool start_shell_process();
@@ -12,9 +13,10 @@ public:
     char read_from_shell();
     int get_primary_descriptor();
     void adjust_window_buffer_size(int width, int height);
+
 private:
     int primary;
-    int secondary; 
+    int secondary;
     const char *secondary_name;
 };
 

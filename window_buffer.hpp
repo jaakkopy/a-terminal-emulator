@@ -3,13 +3,15 @@
 
 #include <vector>
 
-class WinBuf {
+class WinBuf
+{
 public:
     WinBuf();
     void write_char(char c);
     int get_width();
     int get_height();
     std::vector<std::vector<char>> get_buf();
+
 private:
     int row = 0;
     int col = 0;

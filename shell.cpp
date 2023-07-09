@@ -8,7 +8,8 @@
 #include <termios.h>
 #include "shell.hpp"
 
-void Shell::setup_pty() {
+void Shell::setup_pty()
+{
     primary = posix_openpt(O_RDWR | O_NOCTTY);
     if (primary == -1)
         goto pty_setup_fail;
@@ -22,16 +23,19 @@ void Shell::setup_pty() {
         goto pty_setup_fail;
     return;
 pty_setup_fail:
-    std::cerr << strerror(errno) << std::endl; 
+    std::cerr << strerror(errno) << std::endl;
     exit(1);
 }
 
-bool Shell::start_shell_process() {
+bool Shell::start_shell_process()
+{
     pid_t p = fork();
-    if (p == 0) {
+    if (p == 0)
+    {
         close(primary);
         setsid();
-        if (ioctl(secondary, TIOCSCTTY, NULL) == -1) {
+        if (ioctl(secondary, TIOCSCTTY, NULL) == -1)
+        {
             std::cerr << strerror(errno) << std::endl;
             return false;
         }
@@ -39,11 +43,13 @@ bool Shell::start_shell_process() {
         dup2(secondary, STDOUT_FILENO);
         dup2(secondary, STDERR_FILENO);
         close(secondary);
-        //char *env[] = { "TERM=vt100", NULL };
-        char *env[] = { "TERM=dumb", NULL }; // TERM=dumb prevents ANSI code sequences. Better for now
+        // char *env[] = { "TERM=vt100", NULL };
+        char *env[] = {"TERM=dumb", NULL}; // TERM=dumb prevents ANSI code sequences. Better for now
         execle("/bin/bash", "-/bin/bash", (char *)NULL, env);
         return false;
-    } else if (p > 0) {
+    }
+    else if (p > 0)
+    {
         close(secondary);
         return true;
     }
@@ -51,30 +57,37 @@ bool Shell::start_shell_process() {
     return false;
 }
 
-void Shell::write_to_shell(char *buf, int amount_bytes) {
-    for (int i = 0; i < amount_bytes; ++i) {
+void Shell::write_to_shell(char *buf, int amount_bytes)
+{
+    for (int i = 0; i < amount_bytes; ++i)
+    {
         write(primary, &buf[i], 1);
     }
 }
 
-char Shell::read_from_shell() {
+char Shell::read_from_shell()
+{
     char buf[1];
-    if (read(primary, buf, 1) <= 0) {
+    if (read(primary, buf, 1) <= 0)
+    {
         exit(1);
     }
     std::cout << "From shell: " << buf[0] << std::endl;
     return buf[0];
 }
 
-int Shell::get_primary_descriptor() {
+int Shell::get_primary_descriptor()
+{
     return primary;
 }
 
-void Shell::adjust_window_buffer_size(int width, int height) {
+void Shell::adjust_window_buffer_size(int width, int height)
+{
     struct winsize ws;
     ws.ws_col = width;
     ws.ws_row = height;
-    if (ioctl(primary, TIOCSWINSZ, &ws) == -1) {
+    if (ioctl(primary, TIOCSWINSZ, &ws) == -1)
+    {
         std::cerr << strerror(errno) << std::endl;
     }
 }
