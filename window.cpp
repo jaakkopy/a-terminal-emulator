@@ -37,22 +37,39 @@ int Win::get_display_descriptor()
 
 void Win::draw_buf(const std::shared_ptr<WinBuf> win_buf)
 {
+
+    XClearWindow(display, window);
     int pos_x = 0;
-    int pos_y = 0;
+    int pos_y = 50;
     int step_x = width / win_buf->get_width();
     int step_y = height / win_buf->get_height();
-    const std::vector<std::vector<char>> &buf = win_buf->get_buf();
-    for (int r = 0; r < win_buf->get_height(); ++r) {
+    const auto &buf = win_buf->get_buf();
+    int r = 0;
+    int c = 0;
+
+    while (r < win_buf->get_height())
+    {
         pos_x = 0;
-        for (int c = 0; c < win_buf->get_width(); ++c) {
+        while (c < win_buf->get_width())
+        {
             char sym = buf.at(r).at(c);
-            std::cout << "Writing: " << sym << std::endl;
-            if (sym != '\0')
+            ++c;
+            switch (sym) 
             {
-                XDrawString(display, window, graphics_context, pos_x, pos_y, &sym, 1);
+                case '\0':
+                    break;
+                case '\n':
+                    pos_y += step_y;
+                    break;
+                case '\r':
+                    pos_x = 0;
+                    break;
+                default:
+                    XDrawString(display, window, graphics_context, pos_x, pos_y, &sym, 1);
+                    pos_x += step_x;
             }
-            pos_x += step_x;
         }
         pos_y += step_y;
+        ++r;
     }
 }

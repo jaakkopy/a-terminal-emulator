@@ -1,7 +1,7 @@
 #ifndef WIN_BUF_HPP
 #define WIN_BUF_HPP
 
-#include <vector>
+#include <deque>
 
 class WinBuf
 {
@@ -10,14 +10,14 @@ public:
     void write_char(char c);
     int get_width();
     int get_height();
-    std::vector<std::vector<char>> get_buf();
+    std::deque<std::deque<char>> get_buf();
 
 private:
     int row = 0;
     int col = 0;
     int width = 80;
     int height = 25;
-    std::vector<std::vector<char>> buf;
+    std::deque<std::deque<char>> buf;
 };
 
 #endif

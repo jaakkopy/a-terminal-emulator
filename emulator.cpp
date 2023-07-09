@@ -49,6 +49,7 @@ void Emulator::run()
                 handle_event(event);
             }
         }
+        win->draw_buf(win_buf);
     }
 }
 
@@ -63,7 +64,6 @@ void Emulator::handle_event(XEvent &event)
         handle_configure_event(event.xconfigure);
         break;
     case Expose:
-        XClearWindow(win->get_disp(), *win->get_win());
         win->draw_buf(win_buf);
         break;
     }
@@ -92,7 +92,6 @@ void Emulator::handle_configure_event(XConfigureEvent &event)
     {
         win->set_width(event.width);
         win->set_height(event.height);
-        XClearWindow(win->get_disp(), *win->get_win());
         win->draw_buf(win_buf);
     }
 }

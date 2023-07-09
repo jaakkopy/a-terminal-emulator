@@ -2,18 +2,21 @@
 
 WinBuf::WinBuf()
 {
-    buf = std::vector<std::vector<char>>(height, std::vector<char>(width, 0));
+    buf = std::deque<std::deque<char>>(height, std::deque<char>(width, 0));
 }
 
 void WinBuf::write_char(char c)
 {
-    col += 1;
+    ++col;
     if (col == width) {
         col = 0;
-        row += 1;
+        ++row;
     }
     if (row == height) {
-        // TODO: move the lines in the buffer
+        // remove the first row and add a new one to the end 
+        buf.pop_front();
+        buf.push_back(std::deque<char>(width, 0));
+        --row;
     }
     buf.at(row).at(col) = c;
 }
@@ -28,7 +31,7 @@ int WinBuf::get_height()
     return height;
 }
 
-std::vector<std::vector<char>> WinBuf::get_buf()
+std::deque<std::deque<char>> WinBuf::get_buf()
 {
     return buf;
 }
