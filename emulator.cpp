@@ -9,7 +9,6 @@ Emulator::Emulator()
 {
     input = std::make_unique<Input>(500);
     win = std::make_unique<Win>();
-    win_buf = std::make_shared<WinBuf>();
     shell = std::make_unique<Shell>();
 }
 
@@ -17,7 +16,7 @@ void Emulator::run()
 {
     shell->setup_pty();
     shell->start_shell_process();
-    shell->adjust_window_buffer_size(win_buf->get_width(), win_buf->get_height());
+    shell->adjust_window_size(win->get_width(), win->get_height());
     XEvent event;
     fd_set fds;
     int display_descriptor = win->get_display_descriptor();
@@ -38,7 +37,7 @@ void Emulator::run()
         if (FD_ISSET(primary, &fds))
         {
             char c = shell->read_from_shell();
-            win_buf->write_char(c);
+            win->buf_write_char(c);
         }
         // display has events
         if (FD_ISSET(display_descriptor, &fds))
@@ -49,7 +48,7 @@ void Emulator::run()
                 handle_event(event);
             }
         }
-        win->draw_buf(win_buf);
+        win->draw_buf();
     }
 }
 
@@ -64,7 +63,7 @@ void Emulator::handle_event(XEvent &event)
         handle_configure_event(event.xconfigure);
         break;
     case Expose:
-        win->draw_buf(win_buf);
+        win->draw_buf();
         break;
     }
 }
@@ -88,10 +87,11 @@ void Emulator::handle_key_press_event(XKeyEvent &event)
 void Emulator::handle_configure_event(XConfigureEvent &event)
 {
     // check if the window size changed
+    // TODO: implement the buffer size change
     if (event.width != win->get_width() || event.height != win->get_height())
     {
         win->set_width(event.width);
         win->set_height(event.height);
-        win->draw_buf(win_buf);
+        win->draw_buf();
     }
 }

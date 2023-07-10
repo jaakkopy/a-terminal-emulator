@@ -81,7 +81,7 @@ int Shell::get_primary_descriptor()
     return primary;
 }
 
-void Shell::adjust_window_buffer_size(int width, int height)
+void Shell::adjust_window_size(int width, int height)
 {
     struct winsize ws;
     ws.ws_col = width;

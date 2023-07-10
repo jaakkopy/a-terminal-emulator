@@ -12,7 +12,7 @@ public:
     void write_to_shell(char *buf, int amount_bytes);
     char read_from_shell();
     int get_primary_descriptor();
-    void adjust_window_buffer_size(int width, int height);
+    void adjust_window_size(int width, int height);
 
 private:
     int primary;
