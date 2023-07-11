@@ -72,7 +72,6 @@ char Shell::read_from_shell()
     {
         exit(1);
     }
-    std::cout << "From shell: " << buf[0] << std::endl;
     return buf[0];
 }
 

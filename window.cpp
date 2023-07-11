@@ -103,15 +103,20 @@ void Win::draw_buf()
 
 void Win::buf_write_char(char c)
 {
-    ++buf_col;
-    if (c == '\n')
+    if (c == '\b')
     {
-        buf_col = 0;
-        ++buf_row;
+        --buf_col;
+        return;
     }
-    else if (c == '\r')
-    {
-        buf_col = 0;
+    ++buf_col;
+    switch (c) {
+        case '\n':
+            buf_col = 0;
+            ++buf_row;
+            break;
+        case '\r':
+            buf_col = 0;
+            break;
     }
     if (buf_col == buffer_width)
     {
