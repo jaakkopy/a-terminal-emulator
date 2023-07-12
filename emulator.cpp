@@ -74,13 +74,27 @@ void Emulator::handle_key_press_event(XKeyEvent &event)
     KeySym ksym;
     int num = XLookupString(&event, buf, sizeof(buf), &ksym, 0);
     shell->write_to_shell(buf, num);
+    
     if (ksym == XK_Return)
     {
         input->store_current_to_history();
     }
+    else if (ksym == XK_Up)
+    {
+        const std::string previous = input->get_previous();
+        int size = previous.size();
+        shell->write_n('\b', size);
+        shell->write_to_shell(previous);
+        win->write_n('\b', size);
+        win->write_str(previous);
+    }
+    else if (ksym == XK_BackSpace)
+    {
+        input->remove_one();
+    }
     else
     {
-        input->add_to_input_buffer((char)ksym);
+        input->add_one((char)ksym);
     }
 }
 

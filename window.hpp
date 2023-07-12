@@ -5,6 +5,7 @@
 #include <X11/Xlib.h>
 #include <memory>
 #include <deque>
+#include <string>
 
 class Win
 {
@@ -20,6 +21,8 @@ public:
     Display *get_disp() { return display; };
     Window *get_win() { return &window; };
     void buf_write_char(char c);
+    void write_n(char sym, int amount);
+    void write_str(const std::string &s);
 private:
     Display *display = nullptr;
     Window window;

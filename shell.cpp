@@ -65,6 +65,24 @@ void Shell::write_to_shell(char *buf, int amount_bytes)
     }
 }
 
+void Shell::write_to_shell(const std::string &buf)
+{
+    for (auto it = buf.begin(); it < buf.end(); ++it)
+    {
+        char sym = *it;
+        write(primary, &sym, 1);
+    }
+}
+
+void Shell::write_n(char sym, int amount)
+{
+    while (amount > 0)
+    {
+        write(primary, &sym, 1);
+        --amount;
+    }
+}
+
 char Shell::read_from_shell()
 {
     char buf[1];

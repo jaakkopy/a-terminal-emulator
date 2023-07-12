@@ -132,3 +132,20 @@ void Win::buf_write_char(char c)
     }
     buf.at(buf_row).at(buf_col) = c;
 }
+
+void Win::write_n(char sym, int amount)
+{
+    while (amount > 0)
+    {
+        buf_write_char(sym);
+        --amount;
+    }
+}
+
+void Win::write_str(const std::string &s)
+{
+    for (auto it = s.begin(); it < s.end(); ++it)
+    {
+        buf_write_char(*it);
+    }
+}
