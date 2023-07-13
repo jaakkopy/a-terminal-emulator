@@ -30,18 +30,13 @@ std::string Input::get_previous()
     }
     if (history_index == history_size)
     {
-        return history.at(history_index - 1);
+        std::string res = history.at(history_index - 1);
+        input_buffer = std::vector<char>(res.begin(), res.end());
+        return res ;
     }
-    return history.at(history_index++);
-}
-
-std::string Input::get_next()
-{
-    if (history_index == 0)
-    {
-        return history.at(history_index);
-    }
-    return history.at(--history_index);
+    std::string res = history.at(history_index++);
+    input_buffer = std::vector<char>(res.begin(), res.end());
+    return res;
 }
 
 void Input::add_one(char c)

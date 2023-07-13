@@ -11,7 +11,6 @@ public:
     Input(int history_capacity);
     void store_current_to_history();
     std::string get_previous();
-    std::string get_next();
     void add_one(char c);
     void remove_one();
     std::string get_input_buffer();
