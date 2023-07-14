@@ -81,11 +81,11 @@ void Emulator::handle_key_press_event(XKeyEvent &event)
     }
     else if (ksym == XK_Up)
     {
-        int current_size = input->get_input_buffer().size();
-        const std::string previous = input->get_previous();
+        int current_size = input->get_input_buffer_size();
+        input->set_buffer_to_previous_input();
+        const std::string previous = input->get_input_buffer();
         shell->write_n('\b', current_size);
         shell->write_to_shell(previous);
-        //win->write_str(previous);
     }
     else if (ksym == XK_BackSpace)
     {

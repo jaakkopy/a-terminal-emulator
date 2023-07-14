@@ -10,10 +10,11 @@ class Input
 public:
     Input(int history_capacity);
     void store_current_to_history();
-    std::string get_previous();
+    void set_buffer_to_previous_input();
     void add_one(char c);
     void remove_one();
     std::string get_input_buffer();
+    int get_input_buffer_size();
 
 private:
     std::vector<char> input_buffer;

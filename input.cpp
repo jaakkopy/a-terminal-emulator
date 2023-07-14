@@ -22,22 +22,22 @@ void Input::store_current_to_history()
     history_index = 0;
 }
 
-std::string Input::get_previous()
+void Input::set_buffer_to_previous_input()
 {
     if (history_size == 0)
     {
-        return "";
+        return;
     }
     if (history_index == history_size)
     {
         std::string res = history.at(history_index - 1);
         input_buffer = std::vector<char>(res.begin(), res.end());
-        return res ;
+        return;
     }
     std::string res = history.at(history_index++);
     input_buffer = std::vector<char>(res.begin(), res.end());
-    return res;
 }
+
 
 void Input::add_one(char c)
 {
@@ -54,4 +54,9 @@ void Input::remove_one()
 std::string Input::get_input_buffer()
 {
     return std::string(input_buffer.begin(), input_buffer.end());
+}
+
+int Input::get_input_buffer_size()
+{
+    return input_buffer.size();
 }
