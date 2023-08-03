@@ -1,1 +1,1 @@
-A simple terminal emulator made for a Linux environment made with Xlib.
+A simple terminal emulator made with Xlib.
